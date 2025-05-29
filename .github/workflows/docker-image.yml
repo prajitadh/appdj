@@ -30,6 +30,7 @@ jobs:
     runs-on: prod-server
     steps: 
       - name: print hostname
+
         run: hostname
       - name: pull image and run container
         run: docker run --name app-contain -p 9052:9050 -d prajitadh/app:v${{github.run_number}}
