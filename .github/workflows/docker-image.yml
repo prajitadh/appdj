@@ -10,8 +10,27 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: build-server
 
     steps:
+    - uses: action/checkout@v4
     - name: print hostname
       run: hostname
+    - name: build docker Image
+      run: docker build -t app:v${{github.run_number}} .
+    - name: docker image tag
+      run: docker tag app:v${{github.run_number}} prajitadh/app:v${{github.run_number}}
+    - name: docker login
+      run: docker login -u ${{secrets.USERNAME}} -p ${{secrets.PASSWORD}}
+    - name: docker push
+      run: docker push prajitadh/app:v${{github.run_number}}
+
+  deploy:
+    needs: build
+    runs-on: prod-server
+    steps: 
+      - name: print hostname
+        run: hostname
+      - name: pull image and run container
+        run: docker run --name app-contain -p 9052:9050 -d prajitadh/app:v${{github.run_number}}
+
