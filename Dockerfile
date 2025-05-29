@@ -1,6 +1,8 @@
 FROM python:3.10.17-slim-bullseye
 
-RUN apt -y update && apt install -y gcc default-libmysqlclient-dev python3-dev pkg-config
+RUN apt -y update && apt install -y gcc default-libmysqlclient-dev python3-dev pkg-config && apt clean \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY . /opt
 WORKDIR /opt
 
