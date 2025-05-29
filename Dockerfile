@@ -7,7 +7,7 @@ COPY . /opt
 WORKDIR /opt
 
 RUN python3 -m venv vir
-RUN source vir/bin/activate
+RUN /bin/sh -c source vir/bin/activate
 
 RUN pip install --no-cache-dir -r requirements.txt
 
